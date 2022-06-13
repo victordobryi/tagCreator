@@ -1,0 +1,26 @@
+.tag-creator {
+  display: flex;
+  flex-direction: column;
+  width: 30vw;
+  position: relative;
+  z-index: 1;
+}
+
+.cards-field {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.inActive::after {
+  position: absolute;
+  content: '';
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+}
+
+.checkbox {
+  z-index: 2;
+}
