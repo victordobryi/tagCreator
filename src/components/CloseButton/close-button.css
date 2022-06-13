@@ -1,0 +1,11 @@
+.close-button {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  right: 0;
+  background-image: url(../../assets/close.ico);
+  background-repeat: no-repeat;
+  background-size: cover;
+  border: none;
+  background-color: transparent;
+}
