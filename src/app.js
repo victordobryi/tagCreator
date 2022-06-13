@@ -1,7 +1,6 @@
-import { BaseComponent } from './components/BaseComponent/BaseComponent.js';
-import { MainField } from './components/MainField/MainField.js';
+import { TagCreator } from './components/TagCreator/TagCreator.js';
 
 export const App = () => {
   const page = document.getElementById('root');
-  page.append(MainField());
+  page.append(TagCreator());
 };
