@@ -1,15 +1,20 @@
 .tag-creator {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   width: 30vw;
+  min-height: 25vh;
   position: relative;
+  padding: 20px;
+  border: 2px solid;
+  border-radius: 5px;
   z-index: 1;
 }
 
 .cards-field {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  min-height: 20vh;
 }
 
 .inActive::after {
@@ -21,6 +26,11 @@
   top: 0;
 }
 
-.checkbox {
+.control {
+  display: flex;
+  justify-content: space-between;
+}
+
+.control__checkbox {
   z-index: 2;
 }
