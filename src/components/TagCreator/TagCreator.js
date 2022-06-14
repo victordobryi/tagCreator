@@ -1,34 +1,72 @@
 import { BaseComponent } from '../BaseComponent/BaseComponent.js';
 import { Card } from '../Card/Card.js';
-import { Control } from '../Control/Control.js';
 
-export const TagCreator = () => {
-  const tagCreator = BaseComponent('div', 'tag-creator');
-  const cardsField = BaseComponent('div', 'cards-field');
-  const checkbox = BaseComponent('input', 'checkbox');
+export class TagCreator {
+  tagsArr = [];
+  isActive = true;
+  tagCreator = BaseComponent('div', 'tag-creator');
+  cardsField = BaseComponent('div', 'cards-field');
+  control = BaseComponent('form', 'control');
+  checkbox = BaseComponent('input', 'control__checkbox');
+  input = BaseComponent('input', 'control__input');
+  button = BaseComponent('button', 'control__button');
 
-  checkbox.type = 'checkbox';
-  checkbox.addEventListener('click', () => {
-    tagCreator.classList.toggle('inActive');
-  });
+  constructor() {
+    this.checkbox.type = 'checkbox';
+    this.button.innerText = 'Add Tag';
+    this.checkbox.addEventListener('click', this.toggleIsActiveMode);
+    this.control.append(this.input, this.button, this.checkbox);
+    this.tagsArr = localStorage.getItem('tags') ? JSON.parse(localStorage.getItem('tags')) : [];
+    this.addTagsToField();
+    this.tagCreator.append(this.control, this.cardsField);
 
-  const cards = [];
+    this.control.addEventListener('submit', (e) => {
+      e.preventDefault();
+      this.tags = this.input.value;
+      this.input.value = '';
+    });
+  }
 
-  const addCard = (textContent) => {
+  get tags() {
+    return this.tagsArr;
+  }
+
+  set tags(textContent) {
     const cardId = Date.now();
-    const card = Card(cardId, textContent || 'empty block', removeCard);
-    cards.push(card);
-    cards.map((card) => cardsField.append(card));
+    this.tagsArr.push({ content: textContent, id: cardId });
+    this.removeTagsFromField();
+    this.addTagsToField();
+    this.addTagsToLS();
+  }
+
+  toggleIsActiveMode = () => {
+    this.isActive = !this.isActive;
+    this.tagCreator.classList.toggle('inActive');
   };
 
-  const removeCard = (id) => {
-    cards.map((card, i, arr) => (card.id == id ? arr.splice(i, 1) : null));
-    cardsField.innerHTML = '';
-    cards.map((card) => cardsField.append(card));
+  removeTag = (id) => {
+    this.tagsArr.map(({ id: cardId }, i, arr) => (cardId == id ? arr.splice(i, 1) : null));
+    this.removeTagsFromField();
+    this.addTagsToLS();
+    this.addTagsToField();
   };
 
-  const control = Control(addCard);
-  control.append(checkbox);
-  tagCreator.append(control, cardsField);
-  return tagCreator;
-};
+  addTagsToField() {
+    this.tagsArr.map(({ content, id: cardId }, i) => {
+      const card = Card(cardId, content || 'empty block', this.removeTag);
+      this.cardsField.append(card);
+    });
+  }
+
+  removeTagsFromField() {
+    this.cardsField.innerHTML = '';
+  }
+
+  addTagsToLS() {
+    localStorage.setItem('tags', JSON.stringify(this.tagsArr));
+  }
+
+  render() {
+    return this.tagCreator;
+  }
+}
